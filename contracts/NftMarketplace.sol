@@ -79,7 +79,7 @@ contract NftMarketplace is ReentrancyGuard {
     _;
   }
 
-  // mapping NFT Contract address->tokenId -> Listing
+  //listing mapping NFT Contractaddress -> Listing
   mapping(address => mapping(uint256 => Listing)) private s_listings;
 
   //mapping sellers with their earnings
@@ -101,7 +101,6 @@ contract NftMarketplace is ReentrancyGuard {
     if (nft.getApproved(tokenId) != address(this)) {
       revert NftMarketplace__NotApprovedForMarketplace();
     }
-    s_listings[nftAddress][tokenId] = Listing(price, msg.sender);
     emit NftMarketplace__ItemListed(msg.sender, nftAddress, tokenId, price);
   }
 
@@ -112,22 +111,29 @@ contract NftMarketplace is ReentrancyGuard {
     nonReentrant
     isListed(nftAddress, tokenId)
   {
-    Listing memory listedItem = s_listings[nftAddress][tokenId];
-    if (msg.value < listedItem.price) {
+    //Listing memory listedItem = s_listings[nftAddress][tokenId];
+    if (msg.value < s_listings[nftAddress][tokenId].price) {
       revert NftMarketplace__PriceNotMet(
         nftAddress,
         tokenId,
         s_listings[nftAddress][tokenId].price
       );
     }
-    s_proceeds[listedItem.seller] = s_proceeds[listedItem.seller] + msg.value;
+    s_proceeds[s_listings[nftAddress][tokenId].seller] =
+      s_proceeds[s_listings[nftAddress][tokenId].seller] +
+      msg.value;
     delete (s_listings[nftAddress][tokenId]);
     IERC721(nftAddress).safeTransferFrom(
-      listedItem.seller,
+      s_listings[nftAddress][tokenId].seller,
       msg.sender,
       tokenId
     );
-    emit ItemBought(msg.sender, nftAddress, tokenId, listedItem.price);
+    emit ItemBought(
+      msg.sender,
+      nftAddress,
+      tokenId,
+      s_listings[nftAddress][tokenId].price
+    );
   }
 
   function cancelListing(address nftAddress, uint256 tokenId)
