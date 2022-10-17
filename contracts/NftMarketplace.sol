@@ -26,7 +26,7 @@ contract NftMarketplace is ReentrancyGuard {
   //////////////////////////////////////////////////////////////
   ///////////EVENTS//////////////////////////
   //////////////////////////////////////////////////////////////
-  event NftMarketplace__ItemListed(
+  event ItemListed(
     address indexed seller,
     address indexed nftAddress,
     uint256 indexed tokenId,
@@ -103,7 +103,7 @@ contract NftMarketplace is ReentrancyGuard {
       revert NftMarketplace__NotApprovedForMarketplace();
     }
     s_listings[nftAddress][tokenId] = Listing(price, msg.sender);
-    emit NftMarketplace__ItemListed(msg.sender, nftAddress, tokenId, price);
+    emit ItemListed(msg.sender, nftAddress, tokenId, price);
   }
 
   //comment
@@ -150,7 +150,7 @@ contract NftMarketplace is ReentrancyGuard {
     isListed(nftAddress, tokenId)
   {
     s_listings[nftAddress][tokenId].price = newPrice;
-    emit NftMarketplace__ItemListed(msg.sender, nftAddress, tokenId, newPrice);
+    emit ItemListed(msg.sender, nftAddress, tokenId, newPrice);
   }
 
   function withdrawProceeds() external nonReentrant {

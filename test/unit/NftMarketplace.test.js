@@ -40,7 +40,7 @@ const { developmentChains } = require("../../helper-hardhat-config");
           await BasicNft.approve(NftMarketplace.address, 1);
           await expect(NftMarketplace.listItem(BasicNft.address, 1, 1)).to.emit(
             NftMarketplace,
-            "NftMarketplace__ItemListed"
+            "ItemListed"
           );
         });
         it("doesnt allow to be listed from others than the owner!", async function () {
@@ -152,7 +152,7 @@ const { developmentChains } = require("../../helper-hardhat-config");
         it("emits an event when it updates a Listing and changes its price", async function () {
           await expect(
             NftMarketplace.updateListing(BasicNft.address, 0, 2)
-          ).to.emit(NftMarketplace, "NftMarketplace__ItemListed");
+          ).to.emit(NftMarketplace, "ItemListed");
           let newPrice = await NftMarketplace.getListing(BasicNft.address, 0);
           newPrice = await newPrice.price;
 

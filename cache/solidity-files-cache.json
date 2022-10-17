@@ -308,8 +308,8 @@
       ]
     },
     "/home/kostis/demos/hardhat-nft-marketplace-fcc/contracts/NftMarketplace.sol": {
-      "lastModificationDate": 1666009437660,
-      "contentHash": "3a98e405afd6c61f7a44aad7b710908d",
+      "lastModificationDate": 1666010025454,
+      "contentHash": "59aec27cbb3b60cadf5ecba15175d468",
       "sourceName": "contracts/NftMarketplace.sol",
       "solcConfig": {
         "version": "0.8.7",
